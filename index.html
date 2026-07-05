@@ -215,11 +215,17 @@
   .rb9  { animation: orbitPath9 23s infinite ease-in-out alternate; }
   .rb10 { animation: orbitPath10 29s infinite ease-in-out alternate; }
 
-  @media(max-width: 992px) {
+ @media(max-width: 992px) {
     .pgrid, .offering-grid, .details-layout { grid-template-columns: 1fr; gap: 30px; }
-    .roam-btn-instance { display: none; } /* Hide floating chaos buttons on smaller displays for UX */
     .brand-header { top: 20px; left: 20px; }
     .hero { padding-top: 100px; }
+    
+    /* Make the floating buttons smaller and slightly more transparent on phone screens */
+    .roam-btn-instance { 
+      font-size: .55rem; 
+      padding: 8px 14px; 
+      background: rgba(20, 16, 31, 0.85); /* Slightly darker so it's readable over text */
+    } 
   }
 </style>
 </head>
