@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>rmc — summer camp</title>
+<title>RMC — Summer Music Camp 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --void:#040307;
@@ -20,6 +20,7 @@
     --glass-blur: blur(20px);
   }
   *{ box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
   body{
     margin:0; background:var(--void); color:var(--silk);
     font-family:'Inter',sans-serif; font-weight:300;
@@ -63,7 +64,6 @@
   .blueprint-inst { position:absolute; opacity:.14; will-change:transform; color: var(--mist); }
   .blueprint-inst svg { display:block; filter: drop-shadow(0 0 30px rgba(111,224,214,0.2)); }
   
-  /* Precision blueprints spatial layouts */
   .blueprint-inst.guitar { top: 5%; left: 2%; width: 340px; animation: blueprintDrift1 34s infinite ease-in-out alternate; }
   .blueprint-inst.snare { bottom: 8%; right: -5%; width: 420px; animation: blueprintDrift2 40s infinite ease-in-out alternate; }
 
@@ -87,44 +87,111 @@
   .eyebrow::before{ content:''; width:34px; height:1px; background:var(--frost); opacity:.6; }
 
   .headline{
-    font-size:clamp(2.6rem, 7vw, 5.6rem); line-height:1.02; letter-spacing:-.01em; max-width:920px; margin:0 0 32px 0; color: rgba(255, 255, 255, 0.85);
+    font-size:clamp(2.6rem, 7vw, 5.4rem); line-height:1.02; letter-spacing:-.01em; max-width:960px; margin:0 0 32px 0; color: rgba(255, 255, 255, 0.9);
   }
   .headline .glow{
     font-style:italic;
     background:linear-gradient(120deg, rgba(246,242,234,0.95) 20%, rgba(243,165,90,0.9) 60%, rgba(156,123,255,0.9) 100%);
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
-  .sub{ max-width:520px; color:rgba(201, 197, 214, 0.75); font-size:1.05rem; line-height:1.75; margin-bottom:52px; }
+  .sub{ max-width:640px; color:rgba(201, 197, 214, 0.85); font-size:1.1rem; line-height:1.75; margin-bottom:42px; }
+
+  .meta-tags-container {
+    display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px;
+  }
+  .meta-tag {
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; letter-spacing: 0.05em;
+    padding: 6px 16px; border-radius: 30px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); color: var(--mist);
+  }
+  .meta-tag.highlight { border-color: var(--ember); color: var(--ember); }
 
   .countdown-glass-enclosure {
     background: var(--glass-fill); border: 1px solid var(--glass-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-    padding: 30px 40px; border-radius: 20px; max-width: 580px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    animation: driftText3D 18s infinite ease-in-out alternate;
+    padding: 24px 40px; border-radius: 20px; max-width: 580px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   }
   .countdown{ display:flex; gap:clamp(20px,4vw,48px); }
   .cnode{ display:flex; flex-direction:column; }
   .cval{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(1.8rem,4vw,2.6rem); color:#fff; }
   .cunit{ font-size:.62rem; text-transform:uppercase; letter-spacing:.2em; color:var(--mist); margin-top:6px; }
 
-  .pillars{ padding:140px 0 160px 0; }
+  /* ---------- sections layout ---------- */
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700;
+    margin-bottom: 48px; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--silk); display: flex; align-items: center; gap: 20px;
+  }
+  .section-title::after { content: ''; flex-grow: 1; height: 1px; background: var(--glass-border); }
+
+  .pillars{ padding:100px 0; }
   .pgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; }
   .pillar{
     background: var(--glass-fill); border: 1px solid var(--glass-border); border-radius: 18px;
     padding:34px 28px; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-    animation: driftText3D 22s infinite ease-in-out alternate;
+    transition: border-color 0.3s ease;
   }
-  .pillar h3{ font-family:'Instrument Serif',serif; font-weight:400; font-size:1.7rem; margin:16px 0 12px 0; color: rgba(255,255,255,0.9); }
-  .pillar p{ color:rgba(201, 197, 214, 0.7); font-size:.92rem; line-height:1.7; }
+  .pillar:hover { border-color: rgba(111,224,214,0.3); }
+  .pillar h3{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:1.25rem; margin:0 0 12px 0; color: var(--frost); text-transform: uppercase; letter-spacing: 0.05em;}
+  .pillar p{ color:rgba(201, 197, 214, 0.8); font-size:.95rem; line-height:1.7; margin: 0; }
+
+  /* offerings list styling */
+  .offerings { padding: 60px 0; }
+  .offering-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+  .offering-card {
+    background: rgba(255,255,255,0.01); border: 1px solid var(--glass-border);
+    border-radius: 14px; padding: 28px;
+  }
+  .offering-card h4 {
+    margin: 0 0 10px 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+    color: var(--silk); font-size: 1.1rem;
+  }
+  .offering-card p { margin: 0; color: rgba(201,197,214,0.7); font-size: 0.9rem; line-height: 1.6; }
+
+  /* details section */
+  .details-pane { padding: 80px 0 140px 0; }
+  .details-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
+  
+  .info-block {
+    background: var(--glass-fill); border: 1px solid var(--glass-border);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 20px; padding: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  }
+  .info-row { display: flex; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid var(--glass-border); }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; font-size: 0.8rem; color: var(--mist); letter-spacing: 0.1em; }
+  .info-value { font-weight: 400; color: var(--silk); text-align: right; font-size: 0.95rem; }
+  .info-value a { color: var(--frost); text-decoration: none; }
+  .info-value a:hover { text-decoration: underline; }
+
+  .action-callout { display: flex; flex-direction: column; justify-content: center; }
+  .price-tag { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--ember); margin-bottom: 10px; }
+  .price-note { color: var(--mist); font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; }
+  .early-bird {
+    background: rgba(243,165,90,0.1); border: 1px solid rgba(243,165,90,0.2);
+    padding: 16px 24px; border-radius: 10px; color: var(--ember); font-weight: 500; margin-bottom: 32px;
+    font-size: 0.9rem; display: flex; align-items: center; gap: 12px;
+  }
+
+  .cta-btn {
+    display: inline-block; background: var(--silk); color: var(--void);
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-transform: uppercase;
+    text-decoration: none; padding: 20px 40px; border-radius: 50px; text-align: center;
+    letter-spacing: 0.1em; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+  }
+  .cta-btn:hover { background: var(--frost); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(111,224,214,0.3); }
+
+  .notice-bar { text-align: center; color: var(--mist); font-size: 0.85rem; letter-spacing: 0.05em; margin-top: 24px; opacity: 0.7; }
 
   /* ---------- 10 roaming floating button instances ---------- */
   .roam-btn-instance {
     position: fixed; z-index: 100; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
     padding: 14px 24px; border-radius: 50px; border: 1px solid rgba(255,255,255,.12);
-    background: rgba(20, 16, 31, 0.3); color: var(--silk); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    background: rgba(20, 16, 31, 0.6); color: var(--silk); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     cursor: pointer; display: flex; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, border-color 0.3s ease;
   }
   .roam-btn-instance .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--frost); box-shadow: 0 0 8px var(--frost); }
-  .roam-btn-instance:hover { transform: scale(1.08); border-color: var(--frost); }
+  .roam-btn-instance:hover { transform: scale(1.08); border-color: var(--frost); animation-play-state: paused; }
 
   @keyframes orbitPath1  { 0%,100%{top:72%; left:78%;} 50%{top:15%; left:82%;} }
   @keyframes orbitPath2  { 0%,100%{top:18%; left:8%;}  50%{top:76%; left:14%;} }
@@ -147,6 +214,13 @@
   .rb8  { animation: orbitPath8 31s infinite ease-in-out alternate; }
   .rb9  { animation: orbitPath9 23s infinite ease-in-out alternate; }
   .rb10 { animation: orbitPath10 29s infinite ease-in-out alternate; }
+
+  @media(max-width: 992px) {
+    .pgrid, .offering-grid, .details-layout { grid-template-columns: 1fr; gap: 30px; }
+    .roam-btn-instance { display: none; } /* Hide floating chaos buttons on smaller displays for UX */
+    .brand-header { top: 20px; left: 20px; }
+    .hero { padding-top: 100px; }
+  }
 </style>
 </head>
 <body>
@@ -164,61 +238,57 @@
 
 <!-- COMPLEX HIGH-FIDELITY SCHEMATIC BLUEPRINTS ENGINE -->
 <div id="instLayer">
-  <!-- Precision Guitar Technical Blueprint Headstock -->
   <div class="blueprint-inst guitar">
     <svg viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="0.8">
-      <!-- Outer Neck Frame Profiles -->
       <path d="M70 400 V 160 C 70 120, 60 100, 50 80 V 30 H 150 V 80 C 140 100, 130 120, 130 160 V 400" stroke-dasharray="4 4"/>
-      <!-- Fret Technical Blueprint Increments -->
       <line x1="70" y1="360" x2="130" y2="360"/> <line x1="70" y1="310" x2="130" y2="310"/>
       <line x1="70" y1="250" x2="130" y2="250"/> <line x1="72" y1="180" x2="128" y2="180"/>
-      <!-- Technical Center Axis Measurement Lines -->
       <line x1="100" y1="0" x2="100" y2="400" stroke="var(--frost)" stroke-width="0.5" stroke-dasharray="8 4"/>
-      <!-- Peghead Gear Alignments -->
       <circle cx="35" cy="45" r="8"/> <circle cx="35" cy="75" r="8"/> <circle cx="35" cy="105" r="8"/>
       <circle cx="165" cy="45" r="8"/> <circle cx="165" cy="75" r="8"/> <circle cx="165" cy="105" r="8"/>
-      <!-- Measurement Callout Graphics -->
       <path d="M 180 30 H 195 M 180 105 H 195 M 190 30 V 105" stroke="var(--violet)" stroke-width="0.6"/>
       <text x="195" y="70" fill="var(--violet)" font-size="8" font-family="monospace">75.0mm</text>
     </svg>
   </div>
 
-  <!-- Precision Cross-Section Drum Shell Blueprint -->
   <div class="blueprint-inst snare">
     <svg viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="0.8">
-      <!-- Upper & Lower Tension Hoops -->
       <rect x="60" y="50" width="280" height="12" rx="2" stroke-width="1.2"/>
       <rect x="60" y="238" width="280" height="12" rx="2" stroke-width="1.2"/>
-      <!-- Core Acoustic Resonator Shell Wall Profile -->
       <rect x="70" y="62" width="260" height="176" fill="rgba(255,255,255,0.01)"/>
-      <!-- Tension Rod Axis Tracks -->
       <line x1="90" y1="62" x2="90" y2="238"/> <line x1="310" y1="62" x2="310" y2="238"/>
       <line x1="160" y1="62" x2="160" y2="238"/> <line x1="240" y1="62" x2="240" y2="238"/>
-      <!-- Centerline Symmetric Coordinates -->
       <line x1="0" y1="150" x2="400" y2="150" stroke="var(--ember)" stroke-width="0.5" stroke-dasharray="10 5"/>
-      <!-- Diagonal Plan Grid Lines -->
       <path d="M 50 40 L 350 260 M 50 260 L 350 40" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
     </svg>
   </div>
 </div>
 
-<!-- 10 ROAMING LINKS -->
-<a href="terms.html" class="roam-btn-instance rb1"><span class="dot"></span>Claim Spot</a>
-<a href="terms.html" class="roam-btn-instance rb2"><span class="dot"></span>JUDAH</a>
-<a href="terms.html" class="roam-btn-instance rb3"><span class="dot"></span>ASAPH</a>
-<a href="terms.html" class="roam-btn-instance rb4"><span class="dot"></span>JEDUTHAN</a>
-<a href="terms.html" class="roam-btn-instance rb5"><span class="dot"></span>JUBAL</a>
-<a href="terms.html" class="roam-btn-instance rb6"><span class="dot"></span>ORDAINED</a>
-<a href="terms.html" class="roam-btn-instance rb7"><span class="dot"></span>SPIRIT OF ONE</a>
-<a href="terms.html" class="roam-btn-instance rb8"><span class="dot"></span>MUSIC SCHOOL</a>
-<a href="terms.html" class="roam-btn-instance rb9"><span class="dot"></span>Claim Spot</a>
-<a href="terms.html" class="roam-btn-instance rb10"><span class="dot"></span>Join Session</a>
+<!-- 10 ROAMING ROUTED LINKS -->
+<a href="https://lix-229.github.io/rmc-camp/" target="_blank" class="roam-btn-instance rb1"><span class="dot"></span>Secure Spot</a>
+<a href="#offerings" class="roam-btn-instance rb2"><span class="dot"></span>Songwriting</a>
+<a href="#offerings" class="roam-btn-instance rb3"><span class="dot"></span>Music Theory</a>
+<a href="#offerings" class="roam-btn-instance rb4"><span class="dot"></span>Band Sessions</a>
+<a href="#offerings" class="roam-btn-instance rb5"><span class="dot"></span>Voice Training</a>
+<a href="#details" class="roam-btn-instance rb6"><span class="dot">Ages 6 + Above</span></a>
+<a href="tel:0599900847" class="roam-btn-instance rb7"><span class="dot"></span>Call Hotline</a>
+<a href="#details" class="roam-btn-instance rb8"><span class="dot"></span>Adenta Location</a>
+<a href="https://lix-229.github.io/rmc-camp/" target="_blank" class="roam-btn-instance rb9"><span class="dot"></span>Apply Now</a>
+<a href="#offerings" class="roam-btn-instance rb10"><span class="dot"></span>Live Concert</a>
 
 <main>
+  <!-- HERO SECTION -->
   <div class="wrap hero floating-text-block">
-    <div class="eyebrow">Est. August 2026 · SUMMER CAMP DEBUT</div>
-    <h1 class="headline">RAISING MUSICIANS AND<span class="glow">MORE.</span></h1>
-    <p class="sub">Four days finding under open sky and stars. Summer Camp begins the moment you arrive.</p>
+    <div class="eyebrow">RMC SUMMER MUSIC CAMP 2026</div>
+    <h1 class="headline">UNLEASH YOUR<br><span class="glow">INNER MUSICIAN!</span></h1>
+    <p class="sub">Whether you’re picking up a pen for the very first time to write lyrics, compose, or arrange a song, our summer camp is the perfect place to stir your gift of songwriting. Collaborate, create, and make lifelong friends.</p>
+
+    <div class="meta-tags-container">
+      <div class="meta-tag">Discover</div>
+      <div class="meta-tag">Create</div>
+      <div class="meta-tag">Perform</div>
+      <div class="meta-tag highlight">All Skill Levels Welcome</div>
+    </div>
 
     <div class="countdown-glass-enclosure">
       <div class="countdown geo" id="countdown">
@@ -230,17 +300,105 @@
     </div>
   </div>
 
+  <!-- THREE MAIN PILLARS SECTION -->
   <div class="wrap pillars">
     <div class="pgrid">
-      <div class="pillar"><h3>Compose</h3><p>Small ensembles led by working musicians, matched to your level.</p></div>
-      <div class="pillar"><h3>Perform</h3><p>Every camper takes the stage at the closing showcase.</p></div>
-      <div class="pillar"><h3>Belong</h3><p>Shared meals, late rehearsals, and a room full of people practicing.</p></div>
+      <div class="pillar"><h3>Compose</h3><p>Stir your gift of songwriting under the guidance of expert resource persons.</p></div>
+      <div class="pillar"><h3>Belong</h3><p>Collaborate in group sessions, share concepts, and build lifelong friendships.</p></div>
+      <div class="pillar"><h3>Perform</h3><p>Take the big stage during our Grand Finale live concert experience.</p></div>
+    </div>
+  </div>
+
+  <!-- CORE CURRICULUM SECTION -->
+  <div class="wrap offerings" id="offerings">
+    <h2 class="section-title">What We Offer</h2>
+    <div class="offering-grid">
+      <div class="offering-card">
+        <h4>Music Fundamentals</h4>
+        <p>Learn to read staff notation accurately, master complex rhythm intervals, and understand advanced chord structures.</p>
+      </div>
+      <div class="offering-card">
+        <h4>Lyrical Songwriting</h4>
+        <p>Unpack the craft behind effective storytelling, rhyming schemes, and emotional frameworks in lyric writing.</p>
+      </div>
+      <div class="offering-card">
+        <h4>Melody Structures</h4>
+        <p>Learn the delicate art of crafting memorable musical phrases and applying expressive melodies to written lyrics.</p>
+      </div>
+      <div class="offering-card">
+        <h4>Song Arrangement</h4>
+        <p>Understand how structural layers work together to dynamic effect from intro to outro templates.</p>
+      </div>
+      <div class="offering-card">
+        <h4>Ensemble & Band Sessions</h4>
+        <p>Learn the art of creative collaboration, writing, and arranging arrangements as a functional musical team.</p>
+      </div>
+      <div class="offering-card">
+        <h4>Voice Lessons</h4>
+        <p>Develop proper breathing mechanics, pitch control, and harmonization methods in focused Group Voice Training.</p>
+      </div>
+      <div class="offering-card" style="border-color: var(--frost);">
+        <h4>Grand Finale Concert</h4>
+        <p style="color: var(--silk);">Show off your hard work in a spectacular live performance for family and friends on the final day!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING, LOGISTICS & CONTACT SECTION -->
+  <div class="wrap details-pane" id="details">
+    <h2 class="section-title">Camp Details & Registration</h2>
+    
+    <div class="details-layout">
+      <div class="info-block">
+        <div class="info-row">
+          <span class="info-label">Dates</span>
+          <span class="info-value">August 4th - 8th, 2026<br>(Tuesday to Saturday)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Daily Schedule</span>
+          <span class="info-value">8:00 AM – 5:00 PM Daily</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Target Age Group</span>
+          <span class="info-value">Ages 6 and Above</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Location Base</span>
+          <span class="info-value">Rehoboth Multimedia Centre,<br>Adenta</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Inquiries Hotline</span>
+          <span class="info-value"><a href="tel:0599900847">0599900847</a> / <a href="tel:0209461659">0209461659</a></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Email Communications</span>
+          <span class="info-value"><a href="mailto:emmadjokoto@gmail.com">emmadjokoto@gmail.com</a></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Digital Ecosystem</span>
+          <span class="info-value">@rehoboth multimedia centre<br>(Facebook, TikTok, YouTube)</span>
+        </div>
+      </div>
+
+      <div class="action-callout">
+        <div class="price-tag">Ghc 600</div>
+        <div class="price-note">Full 5-Day Comprehensive Package. Includes official customized camp t-shirt and daily curated snacks.</div>
+        
+        <div class="early-bird">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span><strong>Early Bird Discount:</strong> Register before July 10th to save 5%!</span>
+        </div>
+
+        <a href="https://lix-229.github.io/rmc-camp/" target="_blank" class="cta-btn">Secure Your Spot Today</a>
+        <div class="notice-bar">No prior musical experience required — your passion is just enough!</div>
+      </div>
     </div>
   </div>
 </main>
 
 <script>
-  const campDate = new Date("August 5, 2026 09:00:00").getTime();
+  // Countdown target date configured dynamically for August 4th layout execution
+  const campDate = new Date("August 4, 2026 08:00:00").getTime();
   function tickCountdown(){
     const dist = campDate - Date.now();
     if(dist < 0) return;
