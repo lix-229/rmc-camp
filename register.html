@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Registration — Camp Crescendo</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #040307;
+    --mist: #C9C5D6;
+    --silk: #F6F2EA;
+    --ember: #F3A55A;
+    --frost: #6FE0D6;
+    --violet: #9C7BFF;
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: blur(20px);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 60px 24px; background: var(--void); color: var(--silk);
+    font-family: 'Inter', sans-serif; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .studio-card {
+    width: 100%; max-width: 760px; background: rgba(20, 16, 31, 0.4); border: 1px solid var(--glass-border);
+    border-radius: 24px; padding: 50px 45px; box-shadow: 0 40px 90px rgba(0,0,0,0.6);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  }
+  .studio-head { text-align: center; margin-bottom: 45px; }
+  .studio-head h2 { font-family: 'Instrument Serif', serif; font-size: 3rem; margin: 0; font-weight: 400; }
+  .studio-head p { color: var(--mist); font-size: 1rem; margin-top: 10px; }
+  fieldset { border: none; padding: 0; margin: 0 0 40px 0; }
+  legend {
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.2em; color: var(--frost); margin-bottom: 25px; padding-bottom: 8px; border-bottom: 1px solid var(--glass-border); width: 100%;
+  }
+  .frow { display: flex; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .fgroup { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 8px; }
+  .fgroup.full-width { min-width: 100%; }
+  .fgroup label { font-family: 'Space Grotesk', sans-serif; font-size: .65rem; text-transform: uppercase; letter-spacing: .15em; color: var(--mist); }
+  
+  .fgroup input, .fgroup select, .fgroup textarea {
+    background: rgba(0, 0, 0, 0.45); border: 1px solid var(--glass-border); padding: 15px; border-radius: 10px;
+    color: var(--silk); font-family: 'Inter', sans-serif; font-size: .92rem; outline: none; transition: border-color 0.3s;
+  }
+  .fgroup input:focus, .fgroup select:focus, .fgroup textarea:focus { border-color: var(--frost); }
+  
+  .photo-upload-zone {
+    border: 2px dashed var(--glass-border); padding: 25px; border-radius: 12px;
+    text-align: center; cursor: pointer; background: rgba(0,0,0,0.2); transition: border-color 0.3s;
+  }
+  .photo-upload-zone:hover { border-color: var(--frost); }
+  .photo-upload-zone input { display: none; }
+  .preview-thumbnail { width: 90px; height: 90px; border-radius: 12px; object-fit: cover; display: none; margin: 15px auto 0 auto; border: 1px solid var(--frost); }
+
+  .check-row { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 0.85rem; color: var(--silk); line-height: 1.5; }
+  .check-row input { width: 18px; height: 18px; accent-color: var(--frost); margin-top: 2px; }
+
+  .submit-glow {
+    width: 100%; margin-top: 15px; padding: 20px; border-radius: 12px; border: none; cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; font-size: .85rem;
+    background: linear-gradient(120deg, rgba(246,242,234,0.95), rgba(111,224,214,0.9) 70%); color: #0A0812;
+  }
+  .success-state { text-align: center; padding: 40px 0; }
+</style>
+</head>
+<body>
+
+<div class="studio-card">
+  <div id="formState">
+    <div class="studio-head">
+      <h2>Camp Registration</h2>
+      <p>Fill out the parameters below. A receipt download will trigger instantly on completion.</p>
+    </div>
+    
+    <form id="registrationForm" onsubmit="submitRegistration(event)">
+      <fieldset>
+        <legend>01 // Camper Profile</legend>
+        <div class="frow">
+          <div class="fgroup"><label>Musician Full Name</label><input required id="camperName" type="text" placeholder="First and last name"></div>
+          <div class="fgroup"><label>Age</label><input required id="camperAge" type="number" min="8" max="99" placeholder="Years"></div>
+        </div>
+        <div class="frow">
+          <div class="fgroup"><label>Phone Number</label><input required id="camperPhone" type="tel" placeholder="Primary contact phone"></div>
+          <div class="fgroup"><label>Physical Home Address</label><input required id="camperAddress" type="text" placeholder="Street, City, Country"></div>
+        </div>
+        <div class="frow">
+          <div class="fgroup full-width">
+            <label>Camper Identification Photo / Brand Logo</label>
+            <div class="photo-upload-zone" onclick="document.getElementById('photoInput').click()">
+              <span id="uploadPrompt" style="font-size: 0.8rem; color: var(--mist);">Click to upload profile media file</span>
+              <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
+              <img id="photoPreview" class="preview-thumbnail" alt="Preview">
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>02 // Parent / Guardian Details</legend>
+        <div class="frow">
+          <div class="fgroup"><label>Parent/Guardian Name</label><input required id="parentName" type="text" placeholder="Guardian identity name"></div>
+          <div class="fgroup"><label>Emergency Phone Number</label><input required id="parentPhone" type="tel" placeholder="Guardian primary line"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>03 // Medical Consent & Liability</legend>
+        <div class="frow">
+          <div class="fgroup full-width">
+            <label>Known Medical Conditions / Allergies (Write None if N/A)</label>
+            <textarea required id="medicalConditions" placeholder="Please declare medical conditions, food allergies, or daily prescriptions..."></textarea>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgroup full-width">
+            <label class="check-row">
+              <input type="checkbox" required id="medicalConsent">
+              <span>I hereby give authorization for camp sound operators to secure emergency clinic processing if required during session hours.</span>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <button type="submit" id="submitBtn" class="submit-glow">Lock Registration & Download Pass</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  let base64Photo = "No Photo Uploaded";
+
+  function previewPhoto(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('photoPreview').src = e.target.result;
+      document.getElementById('photoPreview').style.display = 'block';
+      document.getElementById('uploadPrompt').innerText = `File Loaded: ${file.name}`;
+      base64Photo = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function submitRegistration(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = "SYNCHRONIZING SECURE LOGS...";
+
+    const dataPayload = {
+      CamperName: document.getElementById('camperName').value,
+      Age: document.getElementById('camperAge').value,
+      Phone: document.getElementById('camperPhone').value,
+      Address: document.getElementById('camperAddress').value,
+      ParentName: document.getElementById('parentName').value,
+      ParentPhone: document.getElementById('parentPhone').value,
+      Medical: document.getElementById('medicalConditions').value,
+      PhotoString: base64Photo,
+      Timestamp: new Date().toLocaleString()
+    };
+
+    // Paste your Google Apps Script URL here
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzbCVqsgDvDz0qYUgcz-8-LbsUHntybvVIE4BFRpeRrGvWxstDvNkbeqPL-akFRKf4/exec';
+
+    try {
+      // Send data and wait for the database to return the generated ID
+      const response = await fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(dataPayload)
+      });
+      
+      const result = await response.json();
+      const camperID = result.id; // This captures RMC001, RMC002, etc.
+
+      // Trigger text download with the real ID included
+      generateLocalReceiptDownload(dataPayload, camperID);
+
+      // Show success screen with their unique ID displayed
+      document.getElementById('formState').innerHTML = `
+        <div class="success-state">
+          <h2 style="font-family:'Instrument Serif',serif; font-size:2.8rem; font-weight:400;">Registration Completed.</h2>
+          <div style="background:rgba(111,224,214,0.1); border:1px solid var(--frost); padding:15px; display:inline-block; margin:20px 0; font-family:'Space Grotesk',sans-serif; letter-spacing:2px; font-weight:700; color:var(--frost); border-radius:8px;">
+            YOUR ID: ${camperID}
+          </div>
+          <p style="color: var(--mist); line-height:1.6;">Your details have been logged in the sheet database. Your local text pass receipt (${camperID}) has downloaded into your downloads folder.</p>
+        </div>
+      `;
+
+    } catch (error) {
+      console.error('Data transmission anomaly caught:', error);
+      // Fallback fallback download if connection fails
+      generateLocalReceiptDownload(dataPayload, "RMC-PENDING");
+      document.getElementById('formState').innerHTML = `
+        <div class="success-state">
+          <h2>Registration Saved Locally.</h2>
+          <p style="color: var(--mist);">Your digital pass downloaded successfully, but the live server link timed out. Your status remains valid.</p>
+        </div>
+      `;
+    }
+  }
+
+  function generateLocalReceiptDownload(payload, assignedID) {
+    const plainTextReceipt = `==================================================
+CAMP CRESCENDO 2026 OFFICIAL REGISTRATION PASS
+==================================================
+ASSIGNED CAMPER ID: ${assignedID}
+--------------------------------------------------
+Log Timestamp   : ${payload.Timestamp}
+Camper Identity : ${payload.CamperName}
+Camper Age      : ${payload.Age} Years Old
+Camper Phone    : ${payload.Phone}
+Camper Address  : ${payload.Address}
+
+PARENT / GUARDIAN CRITERIA
+--------------------------------------------------
+Guardian Name   : ${payload.ParentName}
+Emergency Phone : ${payload.ParentPhone}
+
+MEDICAL SAFETY PROJECTIONS
+--------------------------------------------------
+Declared Status : ${payload.Medical}
+Medical Waiver  : Status Verified / Consent Checked Explicitly
+==================================================`;
+
+    const textBlob = new Blob([plainTextReceipt], { type: 'text/plain' });
+    const hiddenLink = document.createElement('a');
+    hiddenLink.href = URL.createObjectURL(textBlob);
+    hiddenLink.download = `${assignedID}_Pass_${payload.CamperName.replace(/\s+/g, '_')}.txt`;
+    document.body.appendChild(hiddenLink);
+    hiddenLink.click();
+    document.body.removeChild(hiddenLink);
+  }
+</script>

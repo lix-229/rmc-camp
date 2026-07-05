@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Attendance — Summer Camp</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0; padding: 24px; background: #040307; color: #F6F2EA;
+    font-family: 'Inter', sans-serif; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gate-panel {
+    background: rgba(20, 16, 31, 0.5); border: 1px solid rgba(255,255,255,0.12);
+    width: 100%; max-width: 480px; border-radius: 20px; padding: 40px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  }
+  h3 { font-family: 'Instrument Serif', serif; font-size: 2.5rem; margin: 0 0 15px 0; font-weight: 400; }
+  p { font-size: 0.95rem; color: #C9C5D6; line-height: 1.7; margin-bottom: 25px; }
+  .gate-check-row { display: flex; gap: 14px; cursor: pointer; margin-bottom: 35px; }
+  .gate-check-row input { width: 20px; height: 20px; accent-color: #6FE0D6; margin-top: 2px; }
+  .gate-check-text { font-size: 0.85rem; user-select: none; line-height: 1.5; color: #F6F2EA; }
+  
+  .btn-gate-action {
+    width: 100%; padding: 16px; border-radius: 8px; border: none; text-align: center; text-decoration: none; display: block;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+  .btn-gate-locked { background: rgba(35, 31, 51, 0.5); color: #524d66; cursor: not-allowed; pointer-events: none; }
+  .btn-gate-unlocked { background: #F6F2EA; color: #040307; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="gate-panel">
+  <h3>Terms of Attendance</h3>
+  <p>Custom wilderness ensemble configurations require structured, committed attendance coordinates. By verifying below, you acknowledge that team synchronization loops require physical attendance throughout all studio sessions.</p>
+  <br>1. Information will be used for a certificate of participations</br>
+  <br>2. Fees paid are non - refundable</br>
+  <br>3. Fees paid include the benefit of snacks and food,cert,photoshoot.</br>
+  <br>4. Image right are reerved for the camp organizers and would be used for promotional purpose</br>
+<br>
+  <label class="gate-check-row">
+    <input type="checkbox" id="termsCheck" onchange="evaluateGateState()">
+    <span class="gate-check-text">I verify compliance checks, understand the attendance policy, and accept tracking parameters.</span>
+  </label>
+</br>
+  <a href="register.html" id="gateProceedBtn" class="btn-gate-action btn-gate-locked">Proceed to Form</a>
+</div>
+
+<script>
+  const termsCheck = document.getElementById('termsCheck');
+  const gateProceedBtn = document.getElementById('gateProceedBtn');
+
+  function evaluateGateState() {
+    if (termsCheck.checked) {
+      gateProceedBtn.classList.remove('btn-gate-locked');
+      gateProceedBtn.classList.add('btn-gate-unlocked');
+      gateProceedBtn.style.pointerEvents = "auto"; // Restores navigation link access
+    } else {
+      gateProceedBtn.classList.remove('btn-gate-unlocked');
+      gateProceedBtn.classList.add('btn-gate-locked');
+      gateProceedBtn.style.pointerEvents = "none"; // Hard lock navigation routing override
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rmc — summer camp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#040307;
+    --mist:#C9C5D6;
+    --silk:#F6F2EA;
+    --ember:#F3A55A;
+    --frost:#6FE0D6;
+    --violet:#9C7BFF;
+    --glass-fill: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: blur(20px);
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; background:var(--void); color:var(--silk);
+    font-family:'Inter',sans-serif; font-weight:300;
+    overflow-x:hidden; -webkit-font-smoothing:antialiased;
+  }
+  .serif{ font-family:'Instrument Serif', serif; font-weight:400; }
+  .geo{ font-family:'Space Grotesk', sans-serif; }
+
+  /* ---------- background video layer ---------- */
+  .video-background-container {
+    position: fixed; inset: 0; z-index: -2; overflow: hidden; background-color: var(--void);
+  }
+  .video-background-container video { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; }
+
+  #auroraLayer{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(ellipse 65% 50% at 50% 30%, rgba(243,165,90,.12), transparent 70%),
+      radial-gradient(ellipse 50% 45% at 20% 80%, rgba(156,123,255,.08), transparent 60%);
+  }
+  .grain{
+    position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.04; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .brand-header {
+    position: absolute; top: 40px; left: 40px; display: flex; align-items: center; gap: 14px; z-index: 20;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; font-size: 0.85rem;
+    animation: driftText3D 14s infinite ease-in-out;
+  }
+  .camp-logo-icon { width: 32px; height: 32px; color: var(--ember); filter: drop-shadow(0 0 8px var(--ember)); }
+
+  @keyframes driftText3D {
+    0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+    50% { transform: translateY(-12px) rotateX(4deg) rotateY(-3deg); }
+  }
+  .floating-text-block { animation: driftText3D 16s infinite ease-in-out; will-change: transform; }
+
+  /* ---------- blueprint instrument components array ---------- */
+  #instLayer{ position:fixed; inset:0; z-index:2; pointer-events:none; perspective:1400px; }
+  .blueprint-inst { position:absolute; opacity:.14; will-change:transform; color: var(--mist); }
+  .blueprint-inst svg { display:block; filter: drop-shadow(0 0 30px rgba(111,224,214,0.2)); }
+  
+  /* Precision blueprints spatial layouts */
+  .blueprint-inst.guitar { top: 5%; left: 2%; width: 340px; animation: blueprintDrift1 34s infinite ease-in-out alternate; }
+  .blueprint-inst.snare { bottom: 8%; right: -5%; width: 420px; animation: blueprintDrift2 40s infinite ease-in-out alternate; }
+
+  @keyframes blueprintDrift1 {
+    0% { transform: translate3d(0,0,0) rotate(-12deg) scale(0.95); }
+    100% { transform: translate3d(30px, 40px, 80px) rotate(-2deg) scale(1.05); }
+  }
+  @keyframes blueprintDrift2 {
+    0% { transform: translate3d(0,0,0) rotate(25deg) scale(1); }
+    100% { transform: translate3d(-40px, -20px, 50px) rotate(12deg) scale(0.9); }
+  }
+
+  main{ position:relative; z-index:5; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; }
+
+  .hero{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding-top:120px; }
+  .eyebrow{
+    font-family:'Space Grotesk',sans-serif; font-size:.72rem; text-transform:uppercase;
+    letter-spacing:.32em; color:var(--frost); margin-bottom:26px; display:flex; align-items:center; gap:14px;
+  }
+  .eyebrow::before{ content:''; width:34px; height:1px; background:var(--frost); opacity:.6; }
+
+  .headline{
+    font-size:clamp(2.6rem, 7vw, 5.6rem); line-height:1.02; letter-spacing:-.01em; max-width:920px; margin:0 0 32px 0; color: rgba(255, 255, 255, 0.85);
+  }
+  .headline .glow{
+    font-style:italic;
+    background:linear-gradient(120deg, rgba(246,242,234,0.95) 20%, rgba(243,165,90,0.9) 60%, rgba(156,123,255,0.9) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .sub{ max-width:520px; color:rgba(201, 197, 214, 0.75); font-size:1.05rem; line-height:1.75; margin-bottom:52px; }
+
+  .countdown-glass-enclosure {
+    background: var(--glass-fill); border: 1px solid var(--glass-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    padding: 30px 40px; border-radius: 20px; max-width: 580px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    animation: driftText3D 18s infinite ease-in-out alternate;
+  }
+  .countdown{ display:flex; gap:clamp(20px,4vw,48px); }
+  .cnode{ display:flex; flex-direction:column; }
+  .cval{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(1.8rem,4vw,2.6rem); color:#fff; }
+  .cunit{ font-size:.62rem; text-transform:uppercase; letter-spacing:.2em; color:var(--mist); margin-top:6px; }
+
+  .pillars{ padding:140px 0 160px 0; }
+  .pgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; }
+  .pillar{
+    background: var(--glass-fill); border: 1px solid var(--glass-border); border-radius: 18px;
+    padding:34px 28px; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    animation: driftText3D 22s infinite ease-in-out alternate;
+  }
+  .pillar h3{ font-family:'Instrument Serif',serif; font-weight:400; font-size:1.7rem; margin:16px 0 12px 0; color: rgba(255,255,255,0.9); }
+  .pillar p{ color:rgba(201, 197, 214, 0.7); font-size:.92rem; line-height:1.7; }
+
+  /* ---------- 10 roaming floating button instances ---------- */
+  .roam-btn-instance {
+    position: fixed; z-index: 100; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+    padding: 14px 24px; border-radius: 50px; border: 1px solid rgba(255,255,255,.12);
+    background: rgba(20, 16, 31, 0.3); color: var(--silk); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    cursor: pointer; display: flex; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  }
+  .roam-btn-instance .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--frost); box-shadow: 0 0 8px var(--frost); }
+  .roam-btn-instance:hover { transform: scale(1.08); border-color: var(--frost); }
+
+  @keyframes orbitPath1  { 0%,100%{top:72%; left:78%;} 50%{top:15%; left:82%;} }
+  @keyframes orbitPath2  { 0%,100%{top:18%; left:8%;}  50%{top:76%; left:14%;} }
+  @keyframes orbitPath3  { 0%,100%{top:45%; left:85%;} 50%{top:10%; left:45%;} }
+  @keyframes orbitPath4  { 0%,100%{top:82%; left:40%;} 50%{top:35%; left:75%;} }
+  @keyframes orbitPath5  { 0%,100%{top:25%; left:70%;} 50%{top:80%; left:12%;} }
+  @keyframes orbitPath6  { 0%,100%{top:62%; left:22%;} 50%{top:22%; left:50%;} }
+  @keyframes orbitPath7  { 0%,100%{top:12%; left:38%;} 50%{top:68%; left:88%;} }
+  @keyframes orbitPath8  { 0%,100%{top:88%; left:72%;} 50%{top:48%; left:30%;} }
+  @keyframes orbitPath9  { 0%,100%{top:35%; left:15%;} 50%{top:85%; left:62%;} }
+  @keyframes orbitPath10 { 0%,100%{top:55%; left:60%;} 50%{top:12%; left:88%;} }
+
+  .rb1  { animation: orbitPath1 22s infinite ease-in-out alternate; }
+  .rb2  { animation: orbitPath2 26s infinite ease-in-out alternate; }
+  .rb3  { animation: orbitPath3 24s infinite ease-in-out alternate; }
+  .rb4  { animation: orbitPath4 28s infinite ease-in-out alternate; }
+  .rb5  { animation: orbitPath5 30s infinite ease-in-out alternate; }
+  .rb6  { animation: orbitPath6 25s infinite ease-in-out alternate; }
+  .rb7  { animation: orbitPath7 27s infinite ease-in-out alternate; }
+  .rb8  { animation: orbitPath8 31s infinite ease-in-out alternate; }
+  .rb9  { animation: orbitPath9 23s infinite ease-in-out alternate; }
+  .rb10 { animation: orbitPath10 29s infinite ease-in-out alternate; }
+</style>
+</head>
+<body>
+
+<div class="video-background-container">
+  <video autoplay loop muted playsinline><source src="YOUR_DIRECT_VIDEO_STREAM_LINK.mp4" type="video/mp4"></video>
+</div>
+<div id="auroraLayer"></div>
+<div class="grain"></div>
+
+<div class="brand-header">
+  <svg class="camp-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 22e1-4-4 4-4"/><path d="m16 14 4 4-4 4"/><path d="M12 2v3"/></svg>
+  <span>RMC</span>
+</div>
+
+<!-- COMPLEX HIGH-FIDELITY SCHEMATIC BLUEPRINTS ENGINE -->
+<div id="instLayer">
+  <!-- Precision Guitar Technical Blueprint Headstock -->
+  <div class="blueprint-inst guitar">
+    <svg viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="0.8">
+      <!-- Outer Neck Frame Profiles -->
+      <path d="M70 400 V 160 C 70 120, 60 100, 50 80 V 30 H 150 V 80 C 140 100, 130 120, 130 160 V 400" stroke-dasharray="4 4"/>
+      <!-- Fret Technical Blueprint Increments -->
+      <line x1="70" y1="360" x2="130" y2="360"/> <line x1="70" y1="310" x2="130" y2="310"/>
+      <line x1="70" y1="250" x2="130" y2="250"/> <line x1="72" y1="180" x2="128" y2="180"/>
+      <!-- Technical Center Axis Measurement Lines -->
+      <line x1="100" y1="0" x2="100" y2="400" stroke="var(--frost)" stroke-width="0.5" stroke-dasharray="8 4"/>
+      <!-- Peghead Gear Alignments -->
+      <circle cx="35" cy="45" r="8"/> <circle cx="35" cy="75" r="8"/> <circle cx="35" cy="105" r="8"/>
+      <circle cx="165" cy="45" r="8"/> <circle cx="165" cy="75" r="8"/> <circle cx="165" cy="105" r="8"/>
+      <!-- Measurement Callout Graphics -->
+      <path d="M 180 30 H 195 M 180 105 H 195 M 190 30 V 105" stroke="var(--violet)" stroke-width="0.6"/>
+      <text x="195" y="70" fill="var(--violet)" font-size="8" font-family="monospace">75.0mm</text>
+    </svg>
+  </div>
+
+  <!-- Precision Cross-Section Drum Shell Blueprint -->
+  <div class="blueprint-inst snare">
+    <svg viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="0.8">
+      <!-- Upper & Lower Tension Hoops -->
+      <rect x="60" y="50" width="280" height="12" rx="2" stroke-width="1.2"/>
+      <rect x="60" y="238" width="280" height="12" rx="2" stroke-width="1.2"/>
+      <!-- Core Acoustic Resonator Shell Wall Profile -->
+      <rect x="70" y="62" width="260" height="176" fill="rgba(255,255,255,0.01)"/>
+      <!-- Tension Rod Axis Tracks -->
+      <line x1="90" y1="62" x2="90" y2="238"/> <line x1="310" y1="62" x2="310" y2="238"/>
+      <line x1="160" y1="62" x2="160" y2="238"/> <line x1="240" y1="62" x2="240" y2="238"/>
+      <!-- Centerline Symmetric Coordinates -->
+      <line x1="0" y1="150" x2="400" y2="150" stroke="var(--ember)" stroke-width="0.5" stroke-dasharray="10 5"/>
+      <!-- Diagonal Plan Grid Lines -->
+      <path d="M 50 40 L 350 260 M 50 260 L 350 40" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+    </svg>
+  </div>
+</div>
+
+<!-- 10 ROAMING LINKS -->
+<a href="terms.html" class="roam-btn-instance rb1"><span class="dot"></span>Claim Spot</a>
+<a href="terms.html" class="roam-btn-instance rb2"><span class="dot"></span>JUDAH</a>
+<a href="terms.html" class="roam-btn-instance rb3"><span class="dot"></span>ASAPH</a>
+<a href="terms.html" class="roam-btn-instance rb4"><span class="dot"></span>JEDUTHAN</a>
+<a href="terms.html" class="roam-btn-instance rb5"><span class="dot"></span>JUBAL</a>
+<a href="terms.html" class="roam-btn-instance rb6"><span class="dot"></span>ORDAINED</a>
+<a href="terms.html" class="roam-btn-instance rb7"><span class="dot"></span>SPIRIT OF ONE</a>
+<a href="terms.html" class="roam-btn-instance rb8"><span class="dot"></span>MUSIC SCHOOL</a>
+<a href="terms.html" class="roam-btn-instance rb9"><span class="dot"></span>Claim Spot</a>
+<a href="terms.html" class="roam-btn-instance rb10"><span class="dot"></span>Join Session</a>
+
+<main>
+  <div class="wrap hero floating-text-block">
+    <div class="eyebrow">Est. August 2026 · SUMMER CAMP DEBUT</div>
+    <h1 class="headline">RAISING MUSICIANS AND<span class="glow">MORE.</span></h1>
+    <p class="sub">Four days finding under open sky and stars. Summer Camp begins the moment you arrive.</p>
+
+    <div class="countdown-glass-enclosure">
+      <div class="countdown geo" id="countdown">
+        <div class="cnode"><span class="cval" id="dVal">00</span><span class="cunit">Days</span></div>
+        <div class="cnode"><span class="cval" id="hVal">00</span><span class="cunit">Hours</span></div>
+        <div class="cnode"><span class="cval" id="mVal">00</span><span class="cunit">Minutes</span></div>
+        <div class="cnode"><span class="cval" id="sVal">00</span><span class="cunit">Seconds</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap pillars">
+    <div class="pgrid">
+      <div class="pillar"><h3>Compose</h3><p>Small ensembles led by working musicians, matched to your level.</p></div>
+      <div class="pillar"><h3>Perform</h3><p>Every camper takes the stage at the closing showcase.</p></div>
+      <div class="pillar"><h3>Belong</h3><p>Shared meals, late rehearsals, and a room full of people practicing.</p></div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const campDate = new Date("August 5, 2026 09:00:00").getTime();
+  function tickCountdown(){
+    const dist = campDate - Date.now();
+    if(dist < 0) return;
+    const d = Math.floor(dist/86400000);
+    const h = Math.floor((dist%86400000)/3600000);
+    const m = Math.floor((dist%3600000)/60000);
+    const s = Math.floor((dist%60000)/1000);
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('dVal').textContent = pad(d);
+    document.getElementById('hVal').textContent = pad(h);
+    document.getElementById('mVal').textContent = pad(m);
+    document.getElementById('sVal').textContent = pad(s);
+  }
+  tickCountdown(); setInterval(tickCountdown, 1000);
+</script>
+</body>
+</html>
