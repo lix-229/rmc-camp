@@ -33,13 +33,16 @@
   .video-background-container {
     position: fixed; inset: 0; z-index: -2; overflow: hidden; background-color: var(--void);
   }
-  .video-background-container video { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; }
+  .video-background-container video { 
+    width: 100%; height: 100%; object-fit: cover; opacity: 0.45; 
+    transition: opacity 0.8s ease-in-out; /* Smooth fade crossover between videos */
+  }
 
   #auroraLayer{
     position:fixed; inset:0; z-index:-1; pointer-events:none;
     background:
-      radial-gradient(ellipse 65% 50% at 50% 30%, rgba(243,165,90,.12), transparent 70%),
-      radial-gradient(ellipse 50% 45% at 20% 80%, rgba(156,123,255,.08), transparent 60%);
+      radial-gradient(ellipse 65% 50% at 50% 30%, rgba(243,165,90,.15), transparent 70%),
+      radial-gradient(ellipse 50% 45% at 20% 80%, rgba(156,123,255,.1), transparent 60%);
   }
   .grain{
     position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.04; mix-blend-mode:overlay;
@@ -94,20 +97,20 @@
     background:linear-gradient(120deg, rgba(246,242,234,0.95) 20%, rgba(243,165,90,0.9) 60%, rgba(156,123,255,0.9) 100%);
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
-  .sub{ max-width:640px; color:rgba(201, 197, 214, 0.85); font-size:1.1rem; line-height:1.75; margin-bottom:42px; }
+  .sub{ max-width:640px; color:rgba(201, 197, 214, 0.85); font-size:1.1rem; line-height:1.75; margin-bottom:42px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
 
   .meta-tags-container {
     display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px;
   }
   .meta-tag {
     font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; letter-spacing: 0.05em;
-    padding: 6px 16px; border-radius: 30px; background: rgba(255,255,255,0.05);
+    padding: 6px 16px; border-radius: 30px; background: rgba(0,0,0,0.4);
     border: 1px solid rgba(255,255,255,0.1); color: var(--mist);
   }
-  .meta-tag.highlight { border-color: var(--ember); color: var(--ember); }
+  .meta-tag.highlight { border-color: var(--ember); color: var(--ember); background: rgba(243,165,90,0.05); }
 
   .countdown-glass-enclosure {
-    background: var(--glass-fill); border: 1px solid var(--glass-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    background: rgba(4, 3, 7, 0.4); border: 1px solid var(--glass-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     padding: 24px 40px; border-radius: 20px; max-width: 580px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   }
   .countdown{ display:flex; gap:clamp(20px,4vw,48px); }
@@ -126,7 +129,7 @@
   .pillars{ padding:100px 0; }
   .pgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; }
   .pillar{
-    background: var(--glass-fill); border: 1px solid var(--glass-border); border-radius: 18px;
+    background: rgba(4, 3, 7, 0.4); border: 1px solid var(--glass-border); border-radius: 18px;
     padding:34px 28px; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     transition: border-color 0.3s ease;
   }
@@ -138,8 +141,8 @@
   .offerings { padding: 60px 0; }
   .offering-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
   .offering-card {
-    background: rgba(255,255,255,0.01); border: 1px solid var(--glass-border);
-    border-radius: 14px; padding: 28px;
+    background: rgba(4, 3, 7, 0.3); border: 1px solid var(--glass-border);
+    border-radius: 14px; padding: 28px; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
   }
   .offering-card h4 {
     margin: 0 0 10px 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600;
@@ -152,7 +155,7 @@
   .details-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
   
   .info-block {
-    background: var(--glass-fill); border: 1px solid var(--glass-border);
+    background: rgba(4, 3, 7, 0.4); border: 1px solid var(--glass-border);
     backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     border-radius: 20px; padding: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.4);
   }
@@ -234,9 +237,10 @@
 </head>
 <body>
 
+<!-- RMC LOCAL PLAYLIST VIDEO PLAYER CONTAINER -->
 <div class="video-background-container">
-  <video autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?q=80&w=1770&auto=format&fit=crop">
-    <source src="https://player.vimeo.com/external/435649347.hd.mp4?s=6a982976c66cf01827b5085e78a63503f8e5f22e&profile_id=170&oauth2_token_id=57447761" type="video/mp4">
+  <video id="bgPlayer" autoplay muted playsinline>
+    <source src="video_2026-07-05_17-14-21.mp4" type="video/mp4">
   </video>
 </div>
 <div id="auroraLayer"></div>
@@ -247,6 +251,7 @@
   <span>RMC</span>
 </div>
 
+<!-- COMPLEX HIGH-FIDELITY SCHEMATIC BLUEPRINTS ENGINE -->
 <div id="instLayer">
   <div class="blueprint-inst guitar">
     <svg viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="0.8">
@@ -274,6 +279,7 @@
   </div>
 </div>
 
+<!-- 10 ROAMING ROUTED LINKS -->
 <a href="terms.html" class="roam-btn-instance rb1"><span class="dot"></span>Secure Spot</a>
 <a href="#offerings" class="roam-btn-instance rb2"><span class="dot"></span>Songwriting</a>
 <a href="#offerings" class="roam-btn-instance rb3"><span class="dot"></span>Music Theory</a>
@@ -286,6 +292,7 @@
 <a href="#offerings" class="roam-btn-instance rb10"><span class="dot"></span>Live Concert</a>
 
 <main>
+  <!-- HERO SECTION -->
   <div class="wrap hero floating-text-block">
     <div class="eyebrow">RMC SUMMER MUSIC CAMP 2026</div>
     <h1 class="headline">UNLEASH YOUR<br><span class="glow">INNER MUSICIAN!</span></h1>
@@ -308,6 +315,7 @@
     </div>
   </div>
 
+  <!-- THREE MAIN PILLARS SECTION -->
   <div class="wrap pillars">
     <div class="pgrid">
       <div class="pillar"><h3>Compose</h3><p>Stir your gift of songwriting under the guidance of expert resource persons.</p></div>
@@ -316,6 +324,7 @@
     </div>
   </div>
 
+  <!-- CORE CURRICULUM SECTION -->
   <div class="wrap offerings" id="offerings">
     <h2 class="section-title">What We Offer</h2>
     <div class="offering-grid">
@@ -350,6 +359,7 @@
     </div>
   </div>
 
+  <!-- PRICING, LOGISTICS & CONTACT SECTION -->
   <div class="wrap details-pane" id="details">
     <h2 class="section-title">Camp Details & Registration</h2>
     
@@ -402,7 +412,24 @@
 </main>
 
 <script>
-  // Countdown target date configured dynamically for August 4th layout execution
+  // Dynamic Playlist Configurator
+  const playlist = ["video_2026-07-05_17-14-40.mp4", "Download (1).mp4", "Download (15).mp4", "Download (38).mp4", "video_2026-07-05_17-14-21.mp4"];
+  let currentTrackIndex = 0;
+  const player = document.getElementById('bgPlayer');
+
+  player.addEventListener('ended', function() {
+    // Crossfade sequence: briefly drop opacity, swap clip source, fade back up
+    player.style.opacity = 0;
+    setTimeout(() => {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      player.src = playlist[currentTrackIndex];
+      player.load();
+      player.play().catch(err => console.log("Auto-play tracking error:", err));
+      player.style.opacity = 0.45;
+    }, 800);
+  });
+
+  // Countdown clock script target parameters
   const campDate = new Date("August 4, 2026 08:00:00").getTime();
   function tickCountdown(){
     const dist = campDate - Date.now();
