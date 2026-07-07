@@ -71,7 +71,7 @@
   <div id="formState">
     <div class="studio-head">
       <h2>Camp Registration</h2>
-      <p>Fill out the forms below and get a  downloaded Pass.</p>
+      <p>Fill out the parameters below. A receipt download will trigger instantly on completion.</p>
     </div>
     
     <form id="registrationForm" onsubmit="submitRegistration(event)">
@@ -99,7 +99,7 @@
         </div>
         <div class="frow">
           <div class="fgroup full-width">
-            <label>Camper Identification Photo / Brand Logo</label>
+            <label>Camp Camper Identification Photo / Brand Logo</label>
             <div class="photo-upload-zone" onclick="document.getElementById('photoInput').click()">
               <span id="uploadPrompt" style="font-size: 0.8rem; color: var(--mist);">Click to upload profile media file</span>
               <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
@@ -129,7 +129,7 @@
           <div class="fgroup full-width">
             <label class="check-row">
               <input type="checkbox" required id="medicalConsent">
-              <span>I hereby give authorization and consent to the above and for the centre to secure emergency medical processing if required during session hours.</span>
+              <span>I hereby give authorization for camp sound operators to secure emergency clinic processing if required during session hours.</span>
             </label>
           </div>
         </div>
@@ -175,41 +175,41 @@
       Timestamp: new Date().toLocaleString()
     };
 
-    // Paste your Google Apps Script URL here
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxOMvjT8ZQqEIDMCG3jOfvOKWVrqWbSdpphv9jVfqt95tJUp43O-tpLkKDUIvIU14o/exec;
+    // Your exact script web app URL link
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxDgaTrKnfpBl6xzwylvMDnHWkBv8J-b87yOdYg90WJTf-TSlckrHKkRxCDCe7rFm3dHw/exec';
 
     try {
-      // Send data and wait for the database to return the generated ID
+      // Direct post connection that waits to grab the actual returned ID value string
       const response = await fetch(scriptURL, {
         method: 'POST',
         body: JSON.stringify(dataPayload)
       });
       
       const result = await response.json();
-      const camperID = result.id; // This captures RMC001, RMC002, etc.
+      const camperID = result.id; // Reads the accurate code directly from your sheet logs!
 
       // Trigger text download with the real ID included
       generateLocalReceiptDownload(dataPayload, camperID);
 
-      // Show success screen with their unique ID displayed
+      // Show success screen displaying the exact ID from the spreadsheet
       document.getElementById('formState').innerHTML = `
         <div class="success-state">
           <h2 style="font-family:'Instrument Serif',serif; font-size:2.8rem; font-weight:400;">Registration Completed.</h2>
           <div style="background:rgba(111,224,214,0.1); border:1px solid var(--frost); padding:15px; display:inline-block; margin:20px 0; font-family:'Space Grotesk',sans-serif; letter-spacing:2px; font-weight:700; color:var(--frost); border-radius:8px;">
-            YOUR ID: ${camperID}
+            YOUR ID: ${camperID.toUpperCase()}
           </div>
-          <p style="color: var(--mist); line-height:1.6;">Your details have been logged in the sheet database. Your local text pass receipt (${camperID}) has downloaded into your downloads folder.</p>
+          <p style="color: var(--mist); line-height:1.6;">Your details have been logged in the sheet database. Your local text pass receipt (${camperID.toUpperCase()}) has downloaded into your downloads folder.</p>
         </div>
       `;
 
     } catch (error) {
       console.error('Data transmission anomaly caught:', error);
-      // Fallback download if connection fails
-      generateLocalReceiptDownload(dataPayload, "RMC-PENDING");
+      const fallbackName = dataPayload.CamperName.trim().split(" ")[0].toLowerCase();
+      generateLocalReceiptDownload(dataPayload, `${fallbackName}-PENDING`);
       document.getElementById('formState').innerHTML = `
         <div class="success-state">
           <h2>Registration Saved Locally.</h2>
-          <p style="color: var(--mist);">Your digital pass downloaded successfully, but the live server link timed out. Your status remains valid.</p>
+          <p style="color: var(--mist);">Your digital pass downloaded successfully, but the server sync was busy. Your status remains completely valid.</p>
         </div>
       `;
     }
@@ -217,9 +217,9 @@
 
   function generateLocalReceiptDownload(payload, assignedID) {
     const plainTextReceipt = `==================================================
-SUMMER CAMP 2026 OFFICIAL REGISTRATION PASS
+CAMP CRESCENDO 2026 OFFICIAL REGISTRATION PASS
 ==================================================
-ASSIGNED CAMPER ID: ${assignedID}
+ASSIGNED CAMPER ID: ${assignedID.toUpperCase()}
 --------------------------------------------------
 Log Timestamp   : ${payload.Timestamp}
 Camper Identity : ${payload.CamperName}
