@@ -79,11 +79,23 @@
         <legend>01 // Camper Profile</legend>
         <div class="frow">
           <div class="fgroup"><label>Musician Full Name</label><input required id="camperName" type="text" placeholder="First and last name"></div>
-          <div class="fgroup"><label>Age</label><input required id="camperAge" type="number" min="8" max="99" placeholder="Years"></div>
+          <div class="fgroup"><label>Age</label><input required id="camperAge" type="number" min="6" max="99" placeholder="Years"></div>
         </div>
         <div class="frow">
           <div class="fgroup"><label>Phone Number</label><input required id="camperPhone" type="tel" placeholder="Primary contact phone"></div>
           <div class="fgroup"><label>Physical Home Address</label><input required id="camperAddress" type="text" placeholder="Street, City, Country"></div>
+        </div>
+        <div class="frow">
+          <div class="fgroup full-width">
+            <label>Camp Family Assignment</label>
+            <select required id="camperFamily">
+              <option value="" disabled selected style="color: rgba(255,255,255,0.3);">Choose your designated family allocation...</option>
+              <option value="Judah">Judah</option>
+              <option value="Asaph">Asaph</option>
+              <option value="Jeduthun">Jeduthun</option>
+              <option value="Jubal">Jubal</option>
+            </select>
+          </div>
         </div>
         <div class="frow">
           <div class="fgroup full-width">
@@ -155,6 +167,7 @@
       Age: document.getElementById('camperAge').value,
       Phone: document.getElementById('camperPhone').value,
       Address: document.getElementById('camperAddress').value,
+      Family: document.getElementById('camperFamily').value,
       ParentName: document.getElementById('parentName').value,
       ParentPhone: document.getElementById('parentPhone').value,
       Medical: document.getElementById('medicalConditions').value,
@@ -191,7 +204,7 @@
 
     } catch (error) {
       console.error('Data transmission anomaly caught:', error);
-      // Fallback fallback download if connection fails
+      // Fallback download if connection fails
       generateLocalReceiptDownload(dataPayload, "RMC-PENDING");
       document.getElementById('formState').innerHTML = `
         <div class="success-state">
@@ -211,6 +224,7 @@ ASSIGNED CAMPER ID: ${assignedID}
 Log Timestamp   : ${payload.Timestamp}
 Camper Identity : ${payload.CamperName}
 Camper Age      : ${payload.Age} Years Old
+Camper Family   : ${payload.Family}
 Camper Phone    : ${payload.Phone}
 Camper Address  : ${payload.Address}
 
@@ -234,3 +248,5 @@ Medical Waiver  : Status Verified / Consent Checked Explicitly
     document.body.removeChild(hiddenLink);
   }
 </script>
+</body>
+</html>
