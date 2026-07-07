@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Registration — Camp Crescendo</title>
+<title>Summer Camp - Rmc</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -71,7 +71,7 @@
   <div id="formState">
     <div class="studio-head">
       <h2>Camp Registration</h2>
-      <p>Fill out the parameters below. A receipt download will trigger instantly on completion.</p>
+      <p>Fill the form below and get a Pass.</p>
     </div>
     
     <form id="registrationForm" onsubmit="submitRegistration(event)">
@@ -129,13 +129,13 @@
           <div class="fgroup full-width">
             <label class="check-row">
               <input type="checkbox" required id="medicalConsent">
-              <span>I hereby give authorization for camp sound operators to secure emergency clinic processing if required during session hours.</span>
+              <span>I hereby give authorization and consent to the above and to the centre to secure emergency clinic processing if required during session hours.</span>
             </label>
           </div>
         </div>
       </fieldset>
 
-      <button type="submit" id="submitBtn" class="submit-glow">Lock Registration & Download Pass</button>
+      <button type="submit" id="submitBtn" class="submit-glow">Register & Download Pass</button>
     </form>
   </div>
 </div>
@@ -160,7 +160,7 @@
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
-    btn.textContent = "SYNCHRONIZING SECURE LOGS...";
+    btn.textContent = "Processing.....";
 
     const dataPayload = {
       CamperName: document.getElementById('camperName').value,
@@ -176,7 +176,7 @@
     };
 
     // Your exact script web app URL link
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxDgaTrKnfpBl6xzwylvMDnHWkBv8J-b87yOdYg90WJTf-TSlckrHKkRxCDCe7rFm3dHw/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwVt4QPr8nTx4RjiijYOxP6ektna_n7D8_wDAIDUgH8nI_iCYaoIp5PxyX_mfcoOGlhjQ/exec';
 
     try {
       // Direct post connection that waits to grab the actual returned ID value string
@@ -217,7 +217,7 @@
 
   function generateLocalReceiptDownload(payload, assignedID) {
     const plainTextReceipt = `==================================================
-CAMP CRESCENDO 2026 OFFICIAL REGISTRATION PASS
+SUMMER CAMP 2026 OFFICIAL REGISTRATION PASS
 ==================================================
 ASSIGNED CAMPER ID: ${assignedID.toUpperCase()}
 --------------------------------------------------
